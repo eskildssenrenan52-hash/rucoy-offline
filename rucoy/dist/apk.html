@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Rucoy" />
+    <meta name="theme-color" content="#1a0e08" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/icon-192.png" />
+    <title>Rucoy Adventure</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #1a0e08;
+        overflow: hidden;
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      iframe#app {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+        background: #1a0e08;
+      }
+      #fallback {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: #f0c040;
+        font-family: system-ui, sans-serif;
+        text-align: center;
+        padding: 24px;
+      }
+      #fallback a { color: #f0c040; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Wrapper HTML para empacotamento em APK.
+
+      Como gerar o APK:
+        1) Publique o projeto no Lovable (botão Publish). Você receberá uma URL
+           pública, ex.: https://seu-app.lovable.app
+        2) Edite a constante APP_URL abaixo com essa URL.
+        3) Use uma das opções:
+           - PWABuilder (https://www.pwabuilder.com): cole a URL e gere o APK
+             (recomendado, usa o próprio manifest.webmanifest).
+           - Capacitor: `npm i @capacitor/core @capacitor/cli @capacitor/android`,
+             `npx cap init`, copie este arquivo como `public/index.html` do
+             projeto Capacitor (server.url = APP_URL), `npx cap add android`,
+             `npx cap open android` e gere o APK pelo Android Studio.
+           - Median.co / WebIntoApp / GoNative: cole a URL e exporte o APK.
+    -->
+    <iframe
+      id="app"
+      title="Rucoy Adventure"
+      allow="fullscreen; autoplay; clipboard-read; clipboard-write; gamepad; accelerometer; gyroscope"
+      allowfullscreen
+    ></iframe>
+    <div id="fallback">
+      <div>
+        <h1>Configure APP_URL</h1>
+        <p>Edite <code>public/apk.html</code> e troque <code>APP_URL</code> pela URL publicada do seu app.</p>
+      </div>
+    </div>
+    <script>
+      // ▼▼▼ Troque pela URL publicada do seu app antes de gerar o APK ▼▼▼
+      var APP_URL = "https://YOUR-APP.lovable.app/";
+
+      (function () {
+        var frame = document.getElementById("app");
+        var fallback = document.getElementById("fallback");
+        if (!APP_URL || /YOUR-APP/.test(APP_URL)) {
+          frame.style.display = "none";
+          fallback.style.display = "flex";
+          return;
+        }
+        frame.src = APP_URL;
+
+        // Previne zoom por gesto / duplo-toque dentro do APK.
+        document.addEventListener(
+          "gesturestart",
+          function (e) { e.preventDefault(); },
+          { passive: false }
+        );
+      })();
+    </script>
+  </body>
+</html>
