@@ -25,6 +25,8 @@ interface Props {
   onToggleSpec?: () => void
   onTogglePets?: () => void
   onToggleEditor?: () => void
+  onToggleSkinShop?: () => void
+  onToggleEnemyCatalog?: () => void
   onSave: () => void
 }
 
@@ -43,6 +45,8 @@ const MODAL_BUTTONS: BtnDef[] = [
   { key: 'prestige',     icon: '★',  label: 'Prestígio',  shortcut: 'X' },
   { key: 'spec',         icon: '✦',  label: 'Specs',      shortcut: 'B' },
   { key: 'editor',       icon: '🛠', label: 'Editor',     shortcut: 'F2' },
+  { key: 'skinshop',     icon: '👑', label: 'Skins',      shortcut: 'K' },
+  { key: 'enemycatalog', icon: '📖', label: 'Inimigos',   shortcut: 'J' },
   { key: 'help',         icon: '❓', label: 'Ajuda',      shortcut: 'H' },
 ]
 
@@ -88,6 +92,8 @@ function RucoyModalBar({
     pets: onTogglePets ?? (() => {}),
     prestige: onTogglePrestige ?? (() => {}),
     spec: onToggleSpec ?? (() => {}),
+    skinshop: onToggleSkinShop ?? (() => {}),
+    enemycatalog: onToggleEnemyCatalog ?? (() => {}),
     editor: onToggleEditor ?? (() => {}),
     help: onToggleHelp,
   }
@@ -111,27 +117,29 @@ function RucoyModalBar({
 
   return (
     <div
-      className="rcy-pixel rcy-fab-col pointer-events-auto select-none"
+      className="rcy-pixel pointer-events-auto select-none"
       style={{
         position: 'absolute',
-        top: 8,
-        right: 6,
-        bottom: 8,
+        top: 6,
+        left: '50%',
+        transform: 'translateX(-50%)',
         zIndex: 'var(--rcy-z-bar)' as unknown as number,
         display: 'flex',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
         pointerEvents: 'none',
       }}
     >
       <div
         className="rcy-frame"
         style={{
-          padding: 3,
-          maxHeight: '100%',
+          padding: 4,
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 3,
           pointerEvents: 'auto',
           overflow: 'hidden',
+          maxWidth: 'calc(100vw - 16px)',
         }}
       >
         {/* Collapse toggle */}
@@ -140,22 +148,20 @@ function RucoyModalBar({
           onClick={() => setCollapsed(c => !c)}
           title={collapsed ? 'Expandir menu' : 'Recolher menu'}
           aria-label="Alternar menu"
-          style={{ width: 32, height: 24, marginBottom: 3, flex: '0 0 auto' }}
+          style={{ width: 28, height: 28, flex: '0 0 auto' }}
         >
-          {collapsed ? '▸' : '▾'}
+          {collapsed ? '▾' : '▴'}
         </button>
 
         {!collapsed && (
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 32px)',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
               gap: 3,
-              overflowY: 'auto',
-              overflowX: 'hidden',
-              minHeight: 0,
-              flex: '1 1 auto',
-              paddingRight: 2,
+              justifyContent: 'center',
+              maxWidth: 'calc(100vw - 80px)',
             }}
           >
             {MODAL_BUTTONS.map(btn => (
@@ -166,6 +172,7 @@ function RucoyModalBar({
                 aria-label={btn.label}
                 aria-pressed={isOpen[btn.key]}
                 className={`rcy-btn rcy-btn--icon ${isOpen[btn.key] ? 'rcy-btn--active' : ''}`}
+                style={{ width: 32, height: 32, flex: '0 0 auto' }}
               >
                 <span aria-hidden>{btn.icon}</span>
               </button>
@@ -178,7 +185,7 @@ function RucoyModalBar({
           title="Salvar Jogo [G]"
           aria-label="Salvar Jogo"
           className="rcy-btn rcy-btn--icon rcy-btn--gold"
-          style={{ width: 'auto', marginTop: 3, flex: '0 0 auto' }}
+          style={{ width: 32, height: 32, flex: '0 0 auto' }}
         >
           💾
         </button>
